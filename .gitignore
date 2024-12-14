@@ -17,6 +17,7 @@ db.sqlite3
 
 # Environment variables
 .env
+.idea/workspace.xml
 
 # Django migrations
 */migrations/*
@@ -26,6 +27,7 @@ media/
 
 # Static files
 
+**/settings.py
 
 # Local virtual environments
 venv/
@@ -33,6 +35,6 @@ env/
 
 # PyCharm settings
 .idea/
-
+.setting
 # macOS files
 .DS_Store
