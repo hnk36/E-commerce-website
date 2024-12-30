@@ -1,0 +1,42 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+db.sqlite3
+
+# If you are using PostgreSQL:
+*.pgsql
+
+# Environment variables
+.env
+.idea/
+
+# Django migrations
+*/migrations/*
+
+# Media files
+media/
+
+# Static files
+staticfiles/
+unwanted_file.txt
+**/settings.py
+
+# Local virtual environments
+venv/
+.env/
+.cph/
+# PyCharm settings
+.idea/
+.setting
+# macOS files
+.DS_Store
