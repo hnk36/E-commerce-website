@@ -8,6 +8,14 @@ class CategorySerializer(serializers.Serializer):
     id = serializers.IntegerField()
     title = serializers.CharField(max_length=255)
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields =['username', 'passwprd', 'email']
+        extra_kwargs = {'password': {'write_only': True, 'required': True}}
+    def create (self, validated_data):
+        user = User.objects.create_user(**validated_data)   
+        return user    
 
 class ProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
@@ -27,6 +35,7 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 class OrderItemSerializer(serializers.ModelSerializer):
     product = ProductSerializer(source='product_set', many=True, read_only=True)
+
     class Meta:
         model = OrderItem
         fields = ['id', 'order', 'product', 'price', 'quantity', 'get_total_price']

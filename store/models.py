@@ -22,19 +22,13 @@ class Product(models.Model):
     digital = models.BooleanField(default=False)
     image = models.ImageField(upload_to='image/')
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL )
+    description = models.TextField(blank=True)
 
     def __str__(self) -> str:
         return self.name
 
     class Meta:
         ordering = ['name']
-
-    def imageURL(self):
-        try:
-            url = self.image.url
-        except:
-            url = ''
-        return url
 
 
 class Customer(models.Model):
@@ -62,7 +56,7 @@ class Order(models.Model):
         ('PAYMENT_FAILED', 'Failed'),
     ]
     date_order = models.DateTimeField(auto_now_add=True)
-    customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
+    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name='orders')
     complete = models.CharField(max_length=17, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_PENDING)
     transaction_id = models.CharField(max_length=200, null=True)
 
@@ -74,7 +68,7 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=12, decimal_places=3, validators=[MinValueValidator(0.01)])
     quantity = models.PositiveSmallIntegerField()
@@ -111,12 +105,17 @@ class Cart(models.Model):
 
 
 class CartItem(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE,  related_name='cart_items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.PositiveSmallIntegerField()
+    quantity = models.PositiveSmallIntegerField(default=1)
 
     def __str__(self):
         return f"{self.quantity} x {self.product.name} in Cart {self.cart.id}"
+
+    @property
+    def total_price(self):
+        total = self.product.price * self.quantity
+        return total
 
 
 
